@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: codeswipe
+    env: node
+    buildCommand: npm install
+    startCommand: node src/app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
