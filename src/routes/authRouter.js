@@ -47,6 +47,7 @@ authRouter.post("/signup", async (req, res) => {
       httpOnly: true, // Optional: Prevents client-side JavaScript from accessing the cookie
       secure: process.env.NODE_ENV === "production", // Set to true in production to use HTTPS
       sameSite: "None", // Required for cross-origin cookies
+      domain: ".onrender.com",
     });
     res
       .status(201)
@@ -84,6 +85,7 @@ authRouter.post("/login", async (req, res) => {
         httpOnly: true, // Optional: Prevents client-side JavaScript from accessing the cookie
         secure: process.env.NODE_ENV === "production", // Set to true in production to use HTTPS
         sameSite: "None", // Required for cross-origin cookies
+        domain: ".onrender.com"
       });
 
       res.status(200).json({ message: "User logged in successfully!", user });
@@ -102,9 +104,10 @@ authRouter.post("/logout", async (req, res) => {
     // res.cookie("token", null, { expires: new Date(Date.now()) });
     res.cookie("token", null, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "None",
       expires: new Date(Date.now()),
+      domain: ".onrender.com",
     });
 
     res.status(200).send("User logged out successfully!");
