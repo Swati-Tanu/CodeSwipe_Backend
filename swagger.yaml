@@ -66,7 +66,7 @@ paths:
   /login:
     post:
       tags:
-        - Auth
+        - Authentication
       summary: Log in a user
       requestBody:
         required: true
@@ -92,7 +92,7 @@ paths:
   /logout:
     post:
       tags:
-        - Auth
+        - Authentication
       summary: Log out the current user
       responses:
         '200':
