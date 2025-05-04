@@ -11,7 +11,6 @@ const YAML = require("yamljs");
 const swaggerDocument = YAML.load("./swagger.yaml");
 
 require("./utils/cronJob");
-app.set("trust proxy", 1);
 
 app.use(
   cors({
