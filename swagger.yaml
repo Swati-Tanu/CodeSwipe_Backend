@@ -1,11 +1,22 @@
 openapi: 3.0.0
 info:
-  title: DevTinder API
+  title: CodeSwipe API
   version: 1.0.0
-  description: API documentation for the DevTinder backend application
+  description: >
+
+    API documentation for the CodeSwipe backend application.
+
+    CodeSwipe is a developer-focused social networking platform that enables users to connect, collaborate, and grow their professional network. 
+
+    This backend API supports a wide range of features including user authentication, profile management, connection requests, real-time chat, and membership upgrades via Razorpay-integrated payment processing.
+
+    The platform offers tiered membership options—Gold and Silver—with different levels of access and privileges. 
+    Scheduled background jobs (via cron) are used for periodic tasks such as data maintenance and notification handling.
+
+    This documentation outlines all public endpoints used by the client application to interact with the CodeSwipe backend.
 servers:
-  - url: http://localhost:3000
-    description: Local development server
+  - url: https://codeswipe-backend.onrender.com
+    description: Server
 
 paths:
   /signup:
