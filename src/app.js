@@ -6,6 +6,10 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const http = require("http");
 
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger.yaml");
+
 require("./utils/cronJob");
 
 app.use(
@@ -17,6 +21,8 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
 const requestRouter = require("./routes/requestRouter");
@@ -26,7 +32,7 @@ const initializeSocket = require("./utils/socket");
 const chatRouter = require("./routes/chatRouter");
 
 app.get("/home", (req, res) => {
-  res.send("Welcome to DevTinder!");
+  res.send("Welcome to Code Swipe!");
 });
 
 app.use("/", authRouter);

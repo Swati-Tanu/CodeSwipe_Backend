@@ -3,7 +3,7 @@ const { subDays, startOfDay, endOfDay } = require("date-fns"); // alternative "m
 const ConnectionRequest = require("../models/connectionRequest");
 const { sendTestEmail } = require("../services/sendMail");
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("5 8 * * *", async () => {
   console.log("⏰ CRON JOB RUNNING at", new Date().toISOString());
   try {
     const yesterday = subDays(new Date(), 1);
@@ -47,7 +47,6 @@ cron.schedule("* * * * *", async () => {
         console.error(`Failed to send email to ${toUser.emailId}:`, error);
       }
     }
-
   } catch (error) {
     console.error(error);
   }

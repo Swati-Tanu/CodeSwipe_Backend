@@ -1,0 +1,341 @@
+openapi: 3.0.0
+info:
+  title: DevTinder API
+  version: 1.0.0
+  description: API documentation for the DevTinder backend application
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+paths:
+  /signup:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - firstName
+                - lastName
+                - emailId
+                - password
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                emailId:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                age:
+                  type: integer
+                gender:
+                  type: string
+                photoUrl:
+                  type: string
+                about:
+                  type: string
+                skills:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Error registering the user
+
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Log in a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - emailId
+                - password
+              properties:
+                emailId:
+                  type: string
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: User logged in successfully
+        '400':
+          description: Error logging in the user
+
+  /logout:
+    post:
+      tags:
+        - Auth
+      summary: Log out the current user
+      responses:
+        '200':
+          description: User logged out successfully
+        '400':
+          description: Error logging out the user
+
+  /profile/view:
+    get:
+      tags:
+        - Profile
+      summary: View the logged-in user's profile
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user profile
+        '500':
+          description: Error fetching user details
+
+  /profile/edit:
+    patch:
+      tags:
+        - Profile
+      summary: Edit the logged-in user's profile
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Profile updated successfully
+        '500':
+          description: Error updating profile details
+
+  /profile/forgotpassword:
+    patch:
+      tags:
+        - Profile
+      summary: Reset user password via email ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - emailId
+                - newPassword
+              properties:
+                emailId:
+                  type: string
+                newPassword:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Password updated successfully
+        '404':
+          description: User not found
+        '500':
+          description: Error changing the password
+  /request/send/{status}/{toUserId}:
+    post:
+      tags:
+        - Connection Request
+      summary: Send a connection request to another user
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [ignored, interested]
+        - name: toUserId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Connection request sent successfully
+        '400':
+          description: Invalid status or connection already exists
+        '404':
+          description: Target user not found
+        '500':
+          description: Error sending connection request
+
+  /request/review/{status}/{requestId}:
+    post:
+      tags:
+        - Connection Request
+      summary: Review a received connection request
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [accepted, rejected]
+        - name: requestId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Connection request reviewed successfully
+        '400':
+          description: Invalid status
+        '404':
+          description: Connection request not found
+        '500':
+          description: Error reviewing connection request
+  /user/requests/received:
+    get:
+      tags:
+        - User
+      summary: Get all received connection requests
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: List of received connection requests
+        '500':
+          description: Error fetching requests
+
+  /user/connections:
+    get:
+      tags:
+        - User
+      summary: Get all accepted connections of the logged-in user
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: List of accepted connections
+        '500':
+          description: Error fetching connection list
+
+  /user/feed:
+    get:
+      tags:
+        - User
+      summary: Get suggested user feed for logged-in user
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 50
+      responses:
+        '200':
+          description: List of users to show in feed
+        '500':
+          description: Error fetching users
+  /payment/create:
+    post:
+      tags:
+        - Payment
+      summary: Create a Razorpay order for membership
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                membershipType:
+                  type: string
+                  example: gold
+      responses:
+        '200':
+          description: Razorpay order created
+        '500':
+          description: Error creating payment order
+
+  /payment/webhook:
+    post:
+      tags:
+        - Payment
+      summary: Handle Razorpay webhook for payment status update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Razorpay webhook payload
+      responses:
+        '200':
+          description: Webhook processed successfully
+        '400':
+          description: Invalid webhook signature
+        '500':
+          description: Error processing webhook
+
+  /premium/verify:
+    get:
+      tags:
+        - Payment
+      summary: Verify if the user has premium membership
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Returns user details with premium status
+        '500':
+          description: Error verifying premium status
+  /chat/{targetUserId}:
+    get:
+      tags:
+        - Chat
+      summary: Get or create a chat thread with a target user
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: targetUserId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the user to chat with
+      responses:
+        '200':
+          description: Returns the chat thread with messages
+        '500':
+          description: Error retrieving or creating chat
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+
+  
