@@ -39,7 +39,13 @@ authRouter.post("/signup", async (req, res) => {
     const savedUser = await user.save();
 
     const token = await savedUser.getJWT();
+    // res.cookie("token", token, {
+    //   expires: new Date(Date.now() + 8 * 3600000),
+    // });
     res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
       expires: new Date(Date.now() + 8 * 3600000),
     });
 
@@ -71,10 +77,16 @@ authRouter.post("/login", async (req, res) => {
 
     if (isPasswordValid) {
       const token = await user.getJWT();
+      // res.cookie("token", token, {
+      //   expires: new Date(Date.now() + 8 * 3600000),
+      // });
       res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
         expires: new Date(Date.now() + 8 * 3600000),
       });
-      
+
       res.status(200).json({ message: "User logged in successfully!", user });
     } else {
       throw new Error("Invalid credentials");
@@ -88,7 +100,14 @@ authRouter.post("/login", async (req, res) => {
 
 authRouter.post("/logout", async (req, res) => {
   try {
-    res.cookie("token", null, { expires: new Date(Date.now()) });
+    // res.cookie("token", null, { expires: new Date(Date.now()) });
+    res.cookie("token", null, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      expires: new Date(Date.now()),
+    });
+
     res.status(200).send("User logged out successfully!");
   } catch (error) {
     res
