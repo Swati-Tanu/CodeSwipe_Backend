@@ -3,18 +3,16 @@ const User = require("../models/user");
 
 const userAuth = async (req, res, next) => {
   try {
+    console.log("Cookies received by backend:", req.cookies);
     const cookie = req.cookies;
     const { token } = cookie;
 
     if (!token) {
       return res.status(401).send("Please login first!");
     }
-    const decodedToken = await jwt.verify(token, process.env.SECRET, {
-      expiresIn: "1d",
-    });
+    const decodedToken = await jwt.verify(token, process.env.SECRET);
 
-    const { _id } = decodedToken;
-    const user = await User.findById(_id);
+    const user = await User.findById(decodedToken._id);
 
     if (!user) {
       throw new Error("User not found!");
@@ -24,8 +22,8 @@ const userAuth = async (req, res, next) => {
     next();
   } catch (error) {
     res
-      .status(500)
-      .send({ message: "Error in authenticating user", ERROR: error.message });
+      .status(401)
+      .send({ message: "Invalid or expired token!", ERROR: error.message });
   }
 };
 
