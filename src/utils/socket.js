@@ -12,7 +12,7 @@ const getSecretRoomId = (userId, targetUserId) => {
 const initializeSocket = (server) => {
   const io = socket(server, {
     cors: {
-      origin: "https://codeswipe.netlify.app",
+      origin: ["http://localhost:5173", "https://codeswipe.netlify.app"],
     },
   });
 
