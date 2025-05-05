@@ -14,7 +14,7 @@ require("./utils/cronJob");
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://codeswipe.netlify.app"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
