@@ -70,7 +70,7 @@ userRouter.get("/user/connections", async (req, res) => {
       ]);
 
     const data = connectionRequest.map((el) => {
-      if (el.fromUserId._id.toString() === loggedInUser._id) {
+      if (el.fromUserId._id.toString() === loggedInUser._id.toString()) {
         return el.toUserId;
       }
       return el.fromUserId;
