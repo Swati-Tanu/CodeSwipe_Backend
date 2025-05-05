@@ -13,7 +13,7 @@ require("./utils/cronJob");
 
 app.use(
   cors({
-    origin: "https://codeswipe.netlify.app",
+    origin: ["http://localhost:5173", "https://codeswipe.netlify.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -48,8 +48,8 @@ connectDB()
   .then(() => {
     console.log("DB connection established!");
     server.listen(3000, () => {
-       console.log("Server listening to port 3000");
-     });
+      console.log("Server listening to port 3000");
+    });
   })
   .catch(() => {
     console.log("DB cannot be connected!");
