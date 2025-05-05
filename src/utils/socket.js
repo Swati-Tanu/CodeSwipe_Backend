@@ -14,6 +14,7 @@ const initializeSocket = (server) => {
     cors: {
       origin: ["http://localhost:5173", "https://codeswipe.netlify.app"],
     },
+    path: "/api/socket.io",
   });
 
   io.on("connection", (socket) => {
