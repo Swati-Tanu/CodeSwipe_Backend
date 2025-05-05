@@ -2,7 +2,7 @@
 
 <h1> Code Swipe </h1>
 <div align="center"  width="100" height="100">
-  <img src="public/logo.png" alt="html"  height="100"/>
+  <img src="logo.png" alt="html"  height="100"/>
   <br>
   <br>
   <p>Welcome to Code Swipe – your go-to platform for connecting passionate developers and tech enthusiasts! Whether you're looking to collaborate, share your skills, or find like-minded coders, Code Swipe makes networking in tech effortless and fun. Dive in, explore profiles, and build your coding circle – one swipe at a time!</p>
