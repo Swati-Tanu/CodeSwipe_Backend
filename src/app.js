@@ -3,7 +3,6 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
 const http = require("http");
 
 const swaggerUi = require("swagger-ui-express");
@@ -15,11 +14,9 @@ require("./utils/cronJob");
 app.use(
   cors({
     origin: "https://codeswipe.netlify.app",
-    credentials: true, 
   })
 );
 app.use(express.json());
-app.use(cookieParser());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

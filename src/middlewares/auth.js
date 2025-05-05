@@ -2,10 +2,14 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const userAuth = async (req, res, next) => {
-  console.log("Cookies: ", req.cookies);
   try {
-    const cookie = req.cookies;
-    const { token } = cookie;
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).send("Please login first!");
+    }
+
+    const token = authHeader.split(" ")[1];
 
     if (!token) {
       return res.status(401).send("Please login first!");
