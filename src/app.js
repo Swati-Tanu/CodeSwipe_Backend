@@ -13,7 +13,7 @@ require("./utils/cronJob");
 
 app.use(
   cors({
-    origin: "https://codeswipe.netlify.app",
+    origin: "https://codeswipe.netlify.app/",
   })
 );
 app.use(express.json());
